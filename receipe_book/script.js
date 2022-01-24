@@ -8,7 +8,6 @@ async function getRandomMeal() {
   const respData = await resp.json();
   const randomMeal = respData.meals[0];
 
-  console.log(randomMeal);
   addMeal(randomMeal, true);
 }
 
@@ -39,10 +38,32 @@ function addMeal(mealData, random = false) {
         </div>
         <div class="meal-body">
             <h4>${mealData.strMeal}</h4>
-            <button class="fav-btn"><i class="fas fa-heart" onclick=""></i></button>
+            <button class="fav-btn">
+							<i class="fas fa-heart"></i>
+						</button>
         </div>
     
     `;
 
+  const btn = meal.querySelector(".meal-body .fav-btn");
+  btn.addEventListener("click", () => {
+    btn.classList.toggle("active");
+  });
   meals.appendChild(meal);
+}
+
+function addMealToLS(mealId) {
+  const mealIds = getMealsFromLS();
+  localStorage.setItem(
+    "mealIds",
+    JSON.stringify(mealIds.filter((id) => id !== mealId))
+  );
+}
+
+function removeFromLS(mealId) {
+  const mealIds = getMealsFromLS();
+}
+function getMealsFromLS() {
+  const mealIds = JSON.parse(localStorage.getItem("mealIds"));
+  return mealIds;
 }
